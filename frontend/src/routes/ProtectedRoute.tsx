@@ -5,17 +5,19 @@
 import { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 
+import { useAuthStore } from '../store/auth.store'
+
 function ProtectedRoute() {
   const navigate = useNavigate()
-  const token = localStorage.getItem('eventsphere_token')
+  const { isAuthenticated } = useAuthStore()
 
   useEffect(() => {
-    if (!token) {
+    if (!isAuthenticated) {
       navigate('/login', { replace: true })
     }
-  }, [navigate, token])
+  }, [navigate, isAuthenticated])
 
-  if (!token) {
+  if (!isAuthenticated) {
     return null
   }
 

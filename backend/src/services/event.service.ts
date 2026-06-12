@@ -160,10 +160,19 @@ export const deleteEvent = async (id: string, userId: string): Promise<void> => 
   await event.deleteOne();
 };
 
+export const getEventsByOrganizer = async (userId: string) => {
+  ensureObjectId(userId, 'Utilisateur invalide', 400);
+
+  return Event.find({ organizer: new Types.ObjectId(userId) })
+    .populate('organizer', 'name email')
+    .sort({ date: 1 });
+};
+
 export default {
   getEvents,
   getEventById,
   createEvent,
   updateEvent,
   deleteEvent,
+  getEventsByOrganizer,
 };

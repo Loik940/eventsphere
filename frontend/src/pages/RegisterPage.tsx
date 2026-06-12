@@ -32,6 +32,7 @@ function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<RegisterErrors>({})
+  const [isSuccess, setIsSuccess] = useState(false)
 
   const validateForm = (): boolean => {
     const nextErrors: RegisterErrors = {}
@@ -69,7 +70,8 @@ function RegisterPage() {
 
     try {
       await authApi.register({ name, email, password })
-      navigate('/login')
+      setIsSuccess(true)
+      setTimeout(() => navigate('/login'), 1500)
     } catch (_error) {
       setErrors({ general: 'Création du compte impossible. Réessayez plus tard.' })
     } finally {
@@ -137,6 +139,11 @@ function RegisterPage() {
           </div>
 
           {errors.general && <p className="mt-4 text-sm text-[#DC2626]">{errors.general}</p>}
+          {isSuccess && (
+            <p className="mt-4 text-sm font-medium text-[#065F46]">
+              Compte créé ! Redirection en cours...
+            </p>
+          )}
 
           <Button type="submit" variant="primary" size="lg" className="mt-8 w-full" isLoading={isLoading}>
             Créer mon compte

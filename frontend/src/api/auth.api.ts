@@ -5,6 +5,7 @@
 import apiClient from './client'
 import type {
   ApiResponse,
+  AuthUser,
   LoginPayload,
   LoginResult,
   RegisterPayload,
@@ -23,9 +24,16 @@ const register = async (payload: RegisterPayload): Promise<RegisterResult> => {
   return response.data.data
 }
 
+const getMe = async (): Promise<AuthUser> => {
+  const response = await apiClient.get<ApiResponse<AuthUser>>('/auth/me')
+
+  return response.data.data
+}
+
 const authApi = {
   login,
   register,
+  getMe,
 }
 
 export default authApi

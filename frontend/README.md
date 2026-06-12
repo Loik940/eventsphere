@@ -1,73 +1,50 @@
-# React + TypeScript + Vite
+# EventSphere — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Une plateforme moderne de gestion d'événements.
 
-Currently, two official plugins are available:
+## Stack technique
+- React 19
+- TypeScript
+- Vite
+- TailwindCSS
+- Zustand
+- Axios
+- React Router DOM
+- Lucide React
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Configuration locale
 
-## React Compiler
+### 1. Installation
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Variables d'environnement
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Créer un fichier `.env` à la racine de `frontend` avec :
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_URL=http://localhost:5000/api
 ```
+
+### 3. Lancer en développement
+
+Assurez-vous que le backend (port 5000) est lancé en parallèle.
+
+```bash
+npm run dev
+```
+
+## Structure clé
+
+- `/src/pages` : Les pages principales (Dashboard, EventDetail, EventForm, Events, Login, Profile, Register).
+- `/src/api` : Clients API basés sur axios.
+- `/src/store` : États globaux avec Zustand (`authStore`, `filtersStore`, `toastStore`).
+- `/src/components` : Composants réutilisables (UI) et composants spécifiques.
+- `/src/types` : Typages TypeScript stricts correspondants aux schémas Mongoose du backend.
+
+## Déploiement
+
+Ce projet est prêt à être déployé sur **Vercel** ou **Netlify**.
+N'oubliez pas de configurer la variable d'environnement `VITE_API_URL` pointant vers votre backend de production lors du déploiement.

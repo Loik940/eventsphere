@@ -1,5 +1,7 @@
-import { Bell, CalendarDays } from 'lucide-react'
-import { Link, useLocation } from 'react-router-dom'
+import { Bell, CalendarDays, LogOut } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+
+import { useAuthStore } from '../../store/auth.store'
 
 const navLinks = [
   { label: 'Explorer', path: '/', matches: ['/', '/events'] },
@@ -27,7 +29,7 @@ function Logo() {
   )
 }
 
-function Avatar({ isAuthenticated }: { isAuthenticated: boolean }) {
+function Avatar({ isAuthenticated, initials, onLogout }: { isAuthenticated: boolean; initials: string; onLogout: () => void }) {
   if (!isAuthenticated) {
     return (
       <div className="flex items-center gap-2">
@@ -48,19 +50,43 @@ function Avatar({ isAuthenticated }: { isAuthenticated: boolean }) {
   }
 
   return (
-    <button
-      type="button"
-      className="flex h-9 w-9 items-center justify-center rounded-full border border-[#ECEAE4] bg-[#F9F8F6] text-sm font-semibold text-[#0F172A]"
-      aria-label="Ouvrir le profil"
-    >
-      A
-    </button>
+    <div className="flex items-center gap-2">
+      <Link
+        to="/profile"
+        className="flex h-9 w-9 items-center justify-center rounded-full border border-[#ECEAE4] bg-[#4F46E5] text-sm font-semibold text-white"
+        aria-label="Voir le profil"
+      >
+        {initials}
+      </Link>
+      <button
+        type="button"
+        onClick={onLogout}
+        className="flex h-9 w-9 items-center justify-center rounded-full text-[#64748B] hover:bg-[#F4F3F0]"
+        aria-label="Se déconnecter"
+      >
+        <LogOut size={18} strokeWidth={2} aria-hidden="true" />
+      </button>
+    </div>
   )
 }
 
 function Navbar() {
   const { pathname } = useLocation()
-  const isAuthenticated = Boolean(localStorage.getItem('eventsphere_token'))
+  const navigate = useNavigate()
+  const { isAuthenticated, user, logout } = useAuthStore()
+
+  const initials = user?.name
+    ? user.name
+        .split(' ')
+        .slice(0, 2)
+        .map((n) => n[0]?.toUpperCase() ?? '')
+        .join('')
+    : 'U'
+
+  const handleLogout = () => {
+    logout()
+    navigate('/')
+  }
 
   return (
     <header className="sticky top-0 z-50 h-16 border-b border-[#ECEAE4] bg-white">
@@ -100,7 +126,7 @@ function Navbar() {
               <Bell size={20} strokeWidth={2} aria-hidden="true" />
             </button>
           )}
-          <Avatar isAuthenticated={isAuthenticated} />
+          <Avatar isAuthenticated={isAuthenticated} initials={initials} onLogout={handleLogout} />
         </div>
       </div>
     </header>

@@ -1,9 +1,6 @@
-/**
- * Controller utilisateur.
- * Il gerera le profil connecte, les informations personnelles et l'historique des participations.
- */
 import type { RequestHandler } from 'express';
 
+import registrationService from '../services/registration.service';
 import userService from '../services/user.service';
 
 export const getProfile: RequestHandler = async (req, res, next): Promise<void> => {
@@ -32,7 +29,21 @@ export const updateProfile: RequestHandler = async (req, res, next): Promise<voi
   }
 };
 
+export const getUserHistory: RequestHandler = async (req, res, next): Promise<void> => {
+  try {
+    const data = await registrationService.getUserRegistrations(req.user!.id);
+
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   getProfile,
   updateProfile,
+  getUserHistory,
 };

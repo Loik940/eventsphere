@@ -109,10 +109,24 @@ export const deleteEvent: RequestHandler = async (req, res, next): Promise<void>
   }
 };
 
+export const getMyEvents: RequestHandler = async (req, res, next): Promise<void> => {
+  try {
+    const data = await eventService.getEventsByOrganizer(req.user!.id);
+
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   getEvents,
   getEventById,
   createEvent,
   updateEvent,
   deleteEvent,
+  getMyEvents,
 };

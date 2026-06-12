@@ -32,7 +32,21 @@ export const login: RequestHandler = async (req, res, next): Promise<void> => {
   }
 };
 
+export const getMe: RequestHandler = async (req, res, next): Promise<void> => {
+  try {
+    const data = await authService.getMe(req.user!.id);
+
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   register,
   login,
+  getMe,
 };

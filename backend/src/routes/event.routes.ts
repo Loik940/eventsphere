@@ -9,6 +9,7 @@ import {
   deleteEvent,
   getEventById,
   getEvents,
+  getMyEvents,
   updateEvent,
 } from '../controllers/event.controller';
 import authMiddleware from '../middlewares/auth.middleware';
@@ -17,10 +18,18 @@ import { createEventSchema, updateEventSchema } from '../schemas/event.schema';
 
 const router = Router();
 
+// Routes publiques
 router.get('/', getEvents);
+
+// Route authentifiée — doit être AVANT /:id pour ne pas être capturée comme ID
+router.get('/mine', authMiddleware, getMyEvents);
+
+// Routes publiques avec param
 router.get('/:id', getEventById);
+
+// Routes protégées CRUD
 router.post('/', authMiddleware, validateMiddleware(createEventSchema), createEvent);
-router.put('/:id', authMiddleware, validateMiddleware(updateEventSchema), updateEvent);
+router.patch('/:id', authMiddleware, validateMiddleware(updateEventSchema), updateEvent);
 router.delete('/:id', authMiddleware, deleteEvent);
 
 export default router;

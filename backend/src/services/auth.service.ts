@@ -93,7 +93,22 @@ export const login = async (data: LoginInput): Promise<LoginResult> => {
   };
 };
 
+export const getMe = async (userId: string): Promise<AuthUser> => {
+  const user = await User.findById(userId).select('-password');
+
+  if (!user) {
+    throw createServiceError('Utilisateur introuvable', 404);
+  }
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+  };
+};
+
 export default {
   register,
   login,
+  getMe,
 };
