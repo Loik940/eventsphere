@@ -5,6 +5,7 @@
 import { Types, type QueryFilter } from 'mongoose';
 
 import Event, { type IEvent } from '../models/event.model';
+import Registration from '../models/registration.model';
 import type { CreateEventInput, UpdateEventInput } from '../schemas/event.schema';
 
 type ServiceError = Error & {
@@ -92,8 +93,15 @@ export const getEvents = async (filters: EventFilters) => {
     Event.countDocuments(query),
   ]);
 
+  const eventsWithParticipants = await Promise.all(
+    events.map(async (e) => {
+      const currentParticipants = await Registration.countDocuments({ event: e._id, status: 'Participe' });
+      return { ...e.toJSON(), currentParticipants };
+    })
+  );
+
   return {
-    events,
+    events: eventsWithParticipants,
     total,
     page,
     totalPages: Math.ceil(total / limit),
@@ -109,7 +117,9 @@ export const getEventById = async (id: string) => {
     throw createServiceError('Evenement introuvable', 404);
   }
 
-  return event;
+  const currentParticipants = await Registration.countDocuments({ event: event._id, status: 'Participe' });
+
+  return { ...event.toJSON(), currentParticipants };
 };
 
 export const createEvent = async (data: CreateEventInput, organizerId: string) => {
@@ -163,9 +173,16 @@ export const deleteEvent = async (id: string, userId: string): Promise<void> => 
 export const getEventsByOrganizer = async (userId: string) => {
   ensureObjectId(userId, 'Utilisateur invalide', 400);
 
-  return Event.find({ organizer: new Types.ObjectId(userId) })
+  const events = await Event.find({ organizer: new Types.ObjectId(userId) })
     .populate('organizer', 'name email')
     .sort({ date: 1 });
+
+  return Promise.all(
+    events.map(async (e) => {
+      const currentParticipants = await Registration.countDocuments({ event: e._id, status: 'Participe' });
+      return { ...e.toJSON(), currentParticipants };
+    })
+  );
 };
 
 export default {

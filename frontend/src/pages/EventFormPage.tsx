@@ -33,6 +33,7 @@ function EventFormPage() {
   const [date, setDate] = useState('')
   const [location, setLocation] = useState('')
   const [category, setCategory] = useState(CATEGORIES[0])
+  const [imageUrl, setImageUrl] = useState('')
   const [maxParticipants, setMaxParticipants] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(isEditMode)
@@ -51,6 +52,7 @@ function EventFormPage() {
         setDate(new Date(event.date).toISOString().slice(0, 16))
         setLocation(event.location)
         setCategory(event.category)
+        setImageUrl(event.imageUrl ?? '')
         setMaxParticipants(event.maxParticipants?.toString() ?? '')
       })
       .catch(() => {
@@ -88,6 +90,7 @@ function EventFormPage() {
       date: new Date(date).toISOString(),
       location: location.trim(),
       category,
+      ...(imageUrl.trim() ? { imageUrl: imageUrl.trim() } : {}),
       ...(maxParticipants ? { maxParticipants: Number(maxParticipants) } : {}),
     }
 
@@ -206,6 +209,14 @@ function EventFormPage() {
               error={errors.location}
             />
           </div>
+
+          <Input
+            label="URL de l'image (optionnel)"
+            placeholder="https://exemple.com/image.jpg"
+            type="url"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+          />
 
           {errors.general && (
             <p className="rounded-lg bg-[#FEF2F2] px-4 py-3 text-sm text-[#DC2626]">

@@ -20,6 +20,7 @@ export const createEventSchema = z.object({
   date: futureDateSchema,
   location: z.string().min(2, 'Le lieu doit contenir au moins 2 caracteres'),
   category: z.string().min(2, 'La categorie doit contenir au moins 2 caracteres'),
+  imageUrl: z.string().url('L\'URL de l\'image est invalide').optional().or(z.literal('')),
   maxParticipants: z.number().positive('Le nombre maximum de participants doit etre positif').optional(),
 });
 

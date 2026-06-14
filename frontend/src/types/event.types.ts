@@ -16,6 +16,7 @@ export type Event = {
   date: string
   location: string
   category: string
+  imageUrl?: string
   maxParticipants?: number
   organizer: EventOrganizer
   createdAt: string
@@ -43,6 +44,7 @@ export type CreateEventPayload = {
   date: string
   location: string
   category: string
+  imageUrl?: string
   maxParticipants?: number
 }
 

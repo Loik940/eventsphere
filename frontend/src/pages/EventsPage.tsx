@@ -206,14 +206,16 @@ function EventsPage() {
                 id={event._id}
                 title={event.title}
                 category={event.category}
+                imageUrl={event.imageUrl}
                 date={event.date}
                 location={event.location}
                 organizer={event.organizer}
-                currentParticipants={0}
+                currentParticipants={event.currentParticipants ?? 0}
                 maxParticipants={event.maxParticipants}
                 isRegistered={registeredIds.has(event._id)}
                 onRegister={registering ? () => undefined : handleRegister}
                 onToggleFavorite={handleToggleFavorite}
+                onClick={() => navigate(`/events/${event._id}`)}
               />
             ))}
           </div>

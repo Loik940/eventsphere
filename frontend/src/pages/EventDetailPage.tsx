@@ -31,6 +31,7 @@ function EventDetailPage() {
       .getEventById(id)
       .then((data) => {
         setEvent(data)
+        setParticipantCount(data.currentParticipants ?? 0)
       })
       .catch(() => setError('Événement introuvable ou erreur de chargement.'))
       .finally(() => setIsLoading(false))
@@ -45,8 +46,6 @@ function EventDetailPage() {
       .then((regs) => {
         const match = regs.find((r) => r.event._id === id)
         setRegistration(match ?? null)
-        const activeCount = regs.filter((r) => r.event._id === id && r.status === 'Participe').length
-        setParticipantCount(activeCount)
       })
       .catch(() => {/* silencieux */})
   }, [isAuthenticated, id])
@@ -119,6 +118,13 @@ function EventDetailPage() {
 
   return (
     <PageLayout>
+      {/* Bannière de l'événement */}
+      {event.imageUrl && (
+        <div className="h-[30vh] w-full md:h-[45vh]">
+          <img src={event.imageUrl} alt={event.title} className="h-full w-full object-cover" />
+        </div>
+      )}
+
       {/* En-tête */}
       <section className="bg-[#EEF2FF] px-6 py-8 md:px-10">
         <div className="mx-auto max-w-6xl">

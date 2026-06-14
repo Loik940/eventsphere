@@ -6,6 +6,7 @@ type EventCardProps = {
   id: string
   title: string
   category: string
+  imageUrl?: string
   date: string | Date
   location: string
   organizer: {
@@ -16,6 +17,7 @@ type EventCardProps = {
   isRegistered: boolean
   onRegister: (id: string) => void
   onToggleFavorite?: (id: string) => void
+  onClick?: () => void
 }
 
 const categoryAccents: Record<string, string> = {
@@ -63,6 +65,7 @@ function EventCard({
   id,
   title,
   category,
+  imageUrl,
   date,
   location,
   organizer,
@@ -71,6 +74,7 @@ function EventCard({
   isRegistered,
   onRegister,
   onToggleFavorite,
+  onClick,
 }: EventCardProps) {
   const accentColor = getAccentColor(category)
   const isFull = maxParticipants !== undefined && currentParticipants >= maxParticipants
@@ -83,22 +87,32 @@ function EventCard({
       ? 'bg-[#FEF2F2] text-[#DC2626] disabled:cursor-not-allowed'
       : 'bg-[#EEF2FF] text-[#4F46E5] hover:bg-[#E0E7FF]'
 
-  const handleRegister = () => {
+  const handleRegister = (e: React.MouseEvent) => {
+    e.stopPropagation()
     if (!isRegistered && !isFull) {
       onRegister(id)
     }
   }
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-[#ECEAE4] bg-white">
-      <div className="h-[3px]" style={{ backgroundColor: accentColor }} />
+    <article 
+      onClick={onClick}
+      className={`overflow-hidden rounded-2xl border border-[#ECEAE4] bg-white transition-shadow ${onClick ? 'cursor-pointer hover:shadow-md' : ''}`}
+    >
+      {imageUrl ? (
+        <div className="h-[140px] w-full bg-[#F4F3F0]">
+          <img src={imageUrl} alt={title} className="h-full w-full object-cover" />
+        </div>
+      ) : (
+        <div className="h-[140px] w-full" style={{ backgroundColor: accentColor }} />
+      )}
 
       <div className="p-4">
         <div className="mb-4 flex items-center justify-between gap-3">
           <Badge category={category} />
           <button
             type="button"
-            onClick={() => onToggleFavorite?.(id)}
+            onClick={(e) => { e.stopPropagation(); onToggleFavorite?.(id); }}
             disabled={!onToggleFavorite}
             className="flex h-8 w-8 items-center justify-center rounded-full text-[#0F172A] transition-colors hover:bg-[#F4F3F0] disabled:cursor-default disabled:hover:bg-transparent"
             aria-label="Ajouter aux favoris"

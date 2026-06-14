@@ -9,22 +9,12 @@ import DashboardPage from '../pages/DashboardPage'
 import EventDetailPage from '../pages/EventDetailPage'
 import EventFormPage from '../pages/EventFormPage'
 import EventsPage from '../pages/EventsPage'
+import InscriptionsPage from '../pages/InscriptionsPage'
 import LoginPage from '../pages/LoginPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import ProfilePage from '../pages/ProfilePage'
 import RegisterPage from '../pages/RegisterPage'
 import ProtectedRoute from './ProtectedRoute'
-
-function TemporaryPage({ title }: { title: string }) {
-  return (
-    <PageLayout>
-      <section className="mx-auto flex min-h-[calc(100vh-64px)] max-w-3xl flex-col justify-center px-6 py-12 text-center">
-        <h1 className="font-serif text-5xl text-[#0F172A]">{title}</h1>
-        <p className="mt-4 text-sm text-[#64748B]">Cette page sera complétée dans la prochaine étape.</p>
-      </section>
-    </PageLayout>
-  )
-}
 
 function AppRouter() {
   return (
@@ -38,7 +28,7 @@ function AppRouter() {
           <Route path="/events/:id/edit" element={<EventFormPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/inscriptions" element={<TemporaryPage title="Mes inscriptions" />} />
+          <Route path="/inscriptions" element={<InscriptionsPage />} />
         </Route>
 
         <Route path="/events/:id" element={<EventDetailPage />} />

@@ -10,6 +10,7 @@ export interface IEvent {
     date: Date;
     location: string;
     category: string;
+    imageUrl?: string;
     maxParticipants?: number;
     organizer: Types.ObjectId;
     createdAt: Date;
@@ -38,6 +39,11 @@ const eventSchema = new Schema<IEvent>({
     category: {
         type: String,
         required: true,
+        trim: true,
+    },
+    imageUrl: {
+        type: String,
+        required: false,
         trim: true,
     },
     maxParticipants: {
