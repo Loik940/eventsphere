@@ -15,6 +15,7 @@ type EventCardProps = {
   currentParticipants: number
   maxParticipants?: number
   isRegistered: boolean
+  isFavorite?: boolean
   onRegister: (id: string) => void
   onToggleFavorite?: (id: string) => void
   onClick?: () => void
@@ -72,6 +73,7 @@ function EventCard({
   currentParticipants,
   maxParticipants,
   isRegistered,
+  isFavorite,
   onRegister,
   onToggleFavorite,
   onClick,
@@ -117,7 +119,12 @@ function EventCard({
             className="flex h-8 w-8 items-center justify-center rounded-full text-[#0F172A] transition-colors hover:bg-[#F4F3F0] disabled:cursor-default disabled:hover:bg-transparent"
             aria-label="Ajouter aux favoris"
           >
-            <Heart size={20} strokeWidth={2} aria-hidden="true" />
+            <Heart 
+              size={20} 
+              strokeWidth={isFavorite ? 0 : 2} 
+              fill={isFavorite ? '#DC2626' : 'none'} 
+              aria-hidden="true" 
+            />
           </button>
         </div>
 

@@ -4,16 +4,17 @@
  */
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import { PageLayout } from '../components/layout'
 import DashboardPage from '../pages/DashboardPage'
 import EventDetailPage from '../pages/EventDetailPage'
 import EventFormPage from '../pages/EventFormPage'
 import EventsPage from '../pages/EventsPage'
+import ForgotPasswordPage from '../pages/ForgotPasswordPage'
 import InscriptionsPage from '../pages/InscriptionsPage'
 import LoginPage from '../pages/LoginPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import ProfilePage from '../pages/ProfilePage'
 import RegisterPage from '../pages/RegisterPage'
+import ResetPasswordPage from '../pages/ResetPasswordPage'
 import ProtectedRoute from './ProtectedRoute'
 
 function AppRouter() {
@@ -23,6 +24,8 @@ function AppRouter() {
         <Route path="/" element={<EventsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/events/new" element={<EventFormPage />} />
           <Route path="/events/:id/edit" element={<EventFormPage />} />

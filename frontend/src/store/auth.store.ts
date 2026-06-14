@@ -13,6 +13,7 @@ type AuthStore = {
   login: (token: string, user: AuthUser) => void
   logout: () => void
   setUser: (user: AuthUser) => void
+  toggleFavoriteState: (eventId: string) => void
 }
 
 const TOKEN_KEY = 'eventsphere_token'
@@ -33,4 +34,15 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   setUser: (user) => set({ user }),
+
+  toggleFavoriteState: (eventId) =>
+    set((state) => {
+      if (!state.user) return state
+      const favorites = state.user.favorites || []
+      const isFav = favorites.includes(eventId)
+      const newFavs = isFav
+        ? favorites.filter((id) => id !== eventId)
+        : [...favorites, eventId]
+      return { user: { ...state.user, favorites: newFavs } }
+    }),
 }))

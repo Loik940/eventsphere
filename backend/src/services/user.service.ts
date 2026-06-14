@@ -1,68 +1,37 @@
-/**
- * Service utilisateur.
- * Il regroupera la logique liee au profil, au dashboard et a l'historique des participations.
- */
 import { Types } from 'mongoose';
-
 import User from '../models/user.model';
 
-type ServiceError = Error & {
-  status?: number;
-};
-
-type UpdateUserProfileInput = {
-  name?: string;
-  avatar?: string;
-};
-
-const createServiceError = (message: string, status: number): ServiceError => {
-  const error: ServiceError = new Error(message);
-  error.status = status;
-
-  return error;
-};
-
-const ensureObjectId = (id: string): void => {
-  if (!Types.ObjectId.isValid(id)) {
-    throw createServiceError('Utilisateur introuvable', 404);
+const toggleFavorite = async (userId: string, eventId: string) => {
+  if (!Types.ObjectId.isValid(userId) || !Types.ObjectId.isValid(eventId)) {
+    throw new Error('Identifiants invalides');
   }
-};
-
-export const getUserProfile = async (userId: string) => {
-  ensureObjectId(userId);
-
-  const user = await User.findById(userId).select('-password');
-
-  if (!user) {
-    throw createServiceError('Utilisateur introuvable', 404);
-  }
-
-  return user;
-};
-
-export const updateUserProfile = async (userId: string, data: UpdateUserProfileInput) => {
-  ensureObjectId(userId);
 
   const user = await User.findById(userId);
+  if (!user) throw new Error('Utilisateur introuvable');
 
-  if (!user) {
-    throw createServiceError('Utilisateur introuvable', 404);
+  const favorites = user.favorites || [];
+  const eventObjectId = new Types.ObjectId(eventId);
+  const index = favorites.findIndex((id) => id.toString() === eventId);
+
+  if (index === -1) {
+    favorites.push(eventObjectId);
+  } else {
+    favorites.splice(index, 1);
   }
 
-  if (data.name !== undefined) {
-    user.name = data.name;
-  }
-
-  if (data.avatar !== undefined) {
-    user.avatar = data.avatar;
-  }
-
+  user.favorites = favorites;
   await user.save();
 
-  return User.findById(userId).select('-password');
+  return user.favorites;
+};
+
+const getFavorites = async (userId: string) => {
+  const user = await User.findById(userId).populate('favorites');
+  if (!user) throw new Error('Utilisateur introuvable');
+  return user.favorites || [];
 };
 
 export default {
-  getUserProfile,
-  updateUserProfile,
+  toggleFavorite,
+  getFavorites,
 };

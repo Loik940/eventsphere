@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import eventsApi from '../api/events.api'
 import registrationsApi from '../api/registrations.api'
+import usersApi from '../api/users.api'
 import { EventCard } from '../components/events'
 import { PageLayout } from '../components/layout'
 import { Button } from '../components/ui'
@@ -14,7 +15,7 @@ const CATEGORIES = ['Tout', 'Hackathon', 'Atelier', 'Conférence', 'Séminaire',
 
 function EventsPage() {
   const navigate = useNavigate()
-  const { isAuthenticated } = useAuthStore()
+  const { user, isAuthenticated, toggleFavoriteState } = useAuthStore()
   const { filters, setFilter } = useFiltersStore()
 
   const [events, setEvents] = useState<Event[]>([])
@@ -85,8 +86,21 @@ function EventsPage() {
     }
   }
 
-  const handleToggleFavorite = (_eventId: string) => {
-    // Fonctionnalité favoris hors périmètre v1
+  const handleToggleFavorite = async (eventId: string) => {
+    if (!isAuthenticated) {
+      navigate('/login')
+      return
+    }
+    
+    // Mise a jour optimiste
+    toggleFavoriteState(eventId)
+    
+    try {
+      await usersApi.toggleFavorite(eventId)
+    } catch {
+      // Revert en cas d'erreur
+      toggleFavoriteState(eventId)
+    }
   }
 
   const selectedCategory = filters.category ?? 'Tout'
@@ -213,6 +227,7 @@ function EventsPage() {
                 currentParticipants={event.currentParticipants ?? 0}
                 maxParticipants={event.maxParticipants}
                 isRegistered={registeredIds.has(event._id)}
+                isFavorite={user?.favorites?.includes(event._id)}
                 onRegister={registering ? () => undefined : handleRegister}
                 onToggleFavorite={handleToggleFavorite}
                 onClick={() => navigate(`/events/${event._id}`)}

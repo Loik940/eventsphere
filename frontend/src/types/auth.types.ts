@@ -6,6 +6,7 @@ export type AuthUser = {
   id: string
   name: string
   email: string
+  favorites?: string[]
 }
 
 export type LoginPayload = {
@@ -17,6 +18,11 @@ export type RegisterPayload = {
   name: string
   email: string
   password: string
+}
+
+export type UpdatePasswordPayload = {
+  currentPassword: string
+  newPassword: string
 }
 
 export type LoginResult = {

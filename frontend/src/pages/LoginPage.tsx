@@ -92,7 +92,7 @@ function LoginPage() {
           </div>
 
           <div className="mt-4 flex justify-end">
-            <Link to="/forgot-password" className="text-sm font-medium text-[#4F46E5]">
+            <Link to="/forgot-password" className="text-sm font-semibold text-[#4F46E5] hover:text-[#4338CA]">
               Mot de passe oublié ?
             </Link>
           </div>

@@ -10,6 +10,7 @@ import type {
   LoginResult,
   RegisterPayload,
   RegisterResult,
+  UpdatePasswordPayload,
 } from '../types/auth.types'
 
 const login = async (payload: LoginPayload): Promise<LoginResult> => {
@@ -30,10 +31,15 @@ const getMe = async (): Promise<AuthUser> => {
   return response.data.data
 }
 
+const updatePassword = async (payload: UpdatePasswordPayload): Promise<void> => {
+  await apiClient.put('/auth/update-password', payload)
+}
+
 const authApi = {
   login,
   register,
   getMe,
+  updatePassword,
 }
 
 export default authApi

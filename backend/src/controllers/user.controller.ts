@@ -1,41 +1,26 @@
 import type { RequestHandler } from 'express';
-
-import registrationService from '../services/registration.service';
 import userService from '../services/user.service';
 
-export const getProfile: RequestHandler = async (req, res, next): Promise<void> => {
+export const toggleFavorite: RequestHandler = async (req, res, next): Promise<void> => {
   try {
-    const data = await userService.getUserProfile(req.user!.id);
+    const favorites = await userService.toggleFavorite(req.user!.id, req.params.eventId as string);
 
     res.status(200).json({
       success: true,
-      data,
+      data: favorites,
     });
   } catch (error) {
     next(error);
   }
 };
 
-export const updateProfile: RequestHandler = async (req, res, next): Promise<void> => {
+export const getFavorites: RequestHandler = async (req, res, next): Promise<void> => {
   try {
-    const data = await userService.updateUserProfile(req.user!.id, req.body);
+    const favorites = await userService.getFavorites(req.user!.id);
 
     res.status(200).json({
       success: true,
-      data,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getUserHistory: RequestHandler = async (req, res, next): Promise<void> => {
-  try {
-    const data = await registrationService.getUserRegistrations(req.user!.id);
-
-    res.status(200).json({
-      success: true,
-      data,
+      data: favorites,
     });
   } catch (error) {
     next(error);
@@ -43,7 +28,6 @@ export const getUserHistory: RequestHandler = async (req, res, next): Promise<vo
 };
 
 export default {
-  getProfile,
-  updateProfile,
-  getUserHistory,
+  toggleFavorite,
+  getFavorites,
 };

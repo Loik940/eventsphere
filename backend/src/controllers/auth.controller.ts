@@ -45,8 +45,50 @@ export const getMe: RequestHandler = async (req, res, next): Promise<void> => {
   }
 };
 
+export const forgotPassword: RequestHandler = async (req, res, next): Promise<void> => {
+  try {
+    await authService.forgotPassword(req.body);
+
+    res.status(200).json({
+      success: true,
+      message: 'Email de reinitialisation envoye (voir console)',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resetPassword: RequestHandler = async (req, res, next): Promise<void> => {
+  try {
+    await authService.resetPassword(req.params.token as string, req.body);
+
+    res.status(200).json({
+      success: true,
+      message: 'Mot de passe reinitialise avec succes',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updatePassword: RequestHandler = async (req, res, next): Promise<void> => {
+  try {
+    await authService.updatePassword(req.user!.id, req.body);
+
+    res.status(200).json({
+      success: true,
+      message: 'Mot de passe mis a jour',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   register,
   login,
   getMe,
+  forgotPassword,
+  resetPassword,
+  updatePassword,
 };

@@ -11,6 +11,7 @@ export type RegistrationEvent = {
   date: string
   location: string
   category: string
+  imageUrl?: string
 }
 
 export type Registration = {

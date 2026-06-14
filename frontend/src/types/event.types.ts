@@ -18,6 +18,8 @@ export type Event = {
   category: string
   imageUrl?: string
   maxParticipants?: number
+  currentParticipants?: number
+  status: 'A venir' | 'En cours' | 'Termine' | 'Annule'
   organizer: EventOrganizer
   createdAt: string
   updatedAt: string

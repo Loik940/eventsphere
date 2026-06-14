@@ -32,4 +32,5 @@ export const config = {
   JWT_SECRET: getRequiredEnv('JWT_SECRET'),
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN ?? '7d',
   NODE_ENV: process.env.NODE_ENV ?? 'development',
+  CORS_ORIGIN: process.env.CORS_ORIGIN ?? 'http://localhost:5173',
 };
