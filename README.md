@@ -1,5 +1,7 @@
 # EventSphere 
 
+✨ **[Visiter le site en ligne (Live Demo)](https://eventsphere-blush.vercel.app/)** ✨
+
 EventSphere est une plateforme web moderne dédiée à la découverte, la création et la gestion d'événements (hackathons, conférences, ateliers, séminaires, etc.). Conçue avec une interface utilisateur premium et intuitive, elle permet aux utilisateurs de s'inscrire facilement aux événements qui les passionnent et aux organisateurs de gérer leur audience.
 
 ## Fonctionnalités clés
