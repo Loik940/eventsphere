@@ -8,6 +8,7 @@ import jwt, { type SignOptions } from 'jsonwebtoken';
 
 import { config } from '../config/env';
 import User from '../models/user.model';
+import { sendPasswordResetEmail } from './email.service';
 import type {
   ForgotPasswordInput,
   LoginInput,
@@ -136,12 +137,8 @@ export const forgotPassword = async (data: ForgotPasswordInput): Promise<void> =
 
   await user.save();
 
-  // Pour le MVP : simulation d'envoi d'email
   const resetUrl = `${config.CORS_ORIGIN}/reset-password/${resetToken}`;
-  console.log('==============================================');
-  console.log(`[EMAIL SIMULATION] Pour reinitialiser le mot de passe de ${user.email}, cliquez ici :`);
-  console.log(resetUrl);
-  console.log('==============================================');
+  await sendPasswordResetEmail(user.email, resetUrl);
 };
 
 export const resetPassword = async (token: string, data: ResetPasswordInput): Promise<void> => {
