@@ -14,6 +14,12 @@ const transporter = nodemailer.createTransport({
     user: config.SMTP_USER,
     pass: config.SMTP_PASS,
   },
+  // Forcer IPv4 directement au niveau du socket (contournement Render ENETUNREACH)
+  tls: {
+    rejectUnauthorized: false
+  },
+  // @ts-ignore : 'family' est bien passe a net.connect() par nodemailer meme si pas type
+  family: 4
 });
 
 export const sendPasswordResetEmail = async (to: string, resetUrl: string): Promise<void> => {
