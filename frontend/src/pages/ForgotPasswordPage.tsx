@@ -63,9 +63,9 @@ function ForgotPasswordPage() {
           {success ? (
             <div className="rounded-2xl bg-[#ECFDF5] p-6 text-center">
               <Mail className="mx-auto h-12 w-12 text-[#065F46]" />
-              <h3 className="mt-4 text-lg font-semibold text-[#065F46]">E-mail envoyé</h3>
+              <h3 className="mt-4 text-lg font-semibold text-[#065F46]">Vérifiez votre boîte de réception</h3>
               <p className="mt-2 text-sm text-[#065F46]">
-                Si cette adresse est associée à un compte, vous recevrez un lien de réinitialisation d'ici quelques minutes. (Pour ce MVP, vérifiez la console de votre terminal backend).
+                Si un compte est associé à cette adresse e-mail, nous vous avons envoyé les instructions pour réinitialiser votre mot de passe. Pensez à vérifier vos courriers indésirables (spams).
               </p>
             </div>
           ) : (
