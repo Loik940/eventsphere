@@ -1,5 +1,9 @@
+import dns from 'dns';
 import nodemailer from 'nodemailer';
 import { config } from '../config/env';
+
+// Forcer Node.js a utiliser IPv4 en premier pour eviter l'erreur ENETUNREACH (IPv6) sur Render
+dns.setDefaultResultOrder('ipv4first');
 
 // Configuration du transporteur d'emails
 const transporter = nodemailer.createTransport({
