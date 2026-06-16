@@ -18,9 +18,8 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: false
   },
-  // @ts-ignore : 'family' est bien passe a net.connect() par nodemailer meme si pas type
   family: 4
-});
+} as any);
 
 export const sendPasswordResetEmail = async (to: string, resetUrl: string): Promise<void> => {
   // En mode developpement sans SMTP, on continue d'afficher dans la console
